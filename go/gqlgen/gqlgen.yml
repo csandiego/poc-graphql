@@ -1,0 +1,7 @@
+models:
+  Book:
+    model: github.com/csandiego/poc-graphql/go/data.Book
+
+resolver:
+  filename: resolver.go
+  type: Resolver
