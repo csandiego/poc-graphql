@@ -51,7 +51,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CreateBook func(childComplexity int, book BookMutation) int
-		Delete     func(childComplexity int, id int) int
+		DeleteBook func(childComplexity int, id int) int
 		UpdateBook func(childComplexity int, id int, book BookMutation) int
 	}
 
@@ -64,7 +64,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateBook(ctx context.Context, book BookMutation) (*bool, error)
 	UpdateBook(ctx context.Context, id int, book BookMutation) (*bool, error)
-	Delete(ctx context.Context, id int) (*bool, error)
+	DeleteBook(ctx context.Context, id int) (*bool, error)
 }
 type QueryResolver interface {
 	Books(ctx context.Context) ([]*data.Book, error)
@@ -119,17 +119,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateBook(childComplexity, args["book"].(BookMutation)), true
 
-	case "Mutation.delete":
-		if e.complexity.Mutation.Delete == nil {
+	case "Mutation.deleteBook":
+		if e.complexity.Mutation.DeleteBook == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_delete_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteBook_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.Delete(childComplexity, args["id"].(int)), true
+		return e.complexity.Mutation.DeleteBook(childComplexity, args["id"].(int)), true
 
 	case "Mutation.updateBook":
 		if e.complexity.Mutation.UpdateBook == nil {
@@ -243,7 +243,7 @@ input BookMutation {
 type Mutation {
   createBook(book: BookMutation!): Boolean
   updateBook(id: Int!, book: BookMutation!): Boolean
-  delete(id: Int!): Boolean
+  deleteBook(id: Int!): Boolean
 }
 `},
 )
@@ -266,7 +266,7 @@ func (ec *executionContext) field_Mutation_createBook_args(ctx context.Context, 
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_delete_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_deleteBook_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 int
@@ -559,7 +559,7 @@ func (ec *executionContext) _Mutation_updateBook(ctx context.Context, field grap
 	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Mutation_delete(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Mutation_deleteBook(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -576,7 +576,7 @@ func (ec *executionContext) _Mutation_delete(ctx context.Context, field graphql.
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_delete_args(ctx, rawArgs)
+	args, err := ec.field_Mutation_deleteBook_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -585,7 +585,7 @@ func (ec *executionContext) _Mutation_delete(ctx context.Context, field graphql.
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Delete(rctx, args["id"].(int))
+		return ec.resolvers.Mutation().DeleteBook(rctx, args["id"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1995,8 +1995,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_createBook(ctx, field)
 		case "updateBook":
 			out.Values[i] = ec._Mutation_updateBook(ctx, field)
-		case "delete":
-			out.Values[i] = ec._Mutation_delete(ctx, field)
+		case "deleteBook":
+			out.Values[i] = ec._Mutation_deleteBook(ctx, field)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

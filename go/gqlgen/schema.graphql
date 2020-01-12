@@ -17,5 +17,5 @@ input BookMutation {
 type Mutation {
   createBook(book: BookMutation!): Boolean
   updateBook(id: Int!, book: BookMutation!): Boolean
-  delete(id: Int!): Boolean
+  deleteBook(id: Int!): Boolean
 }

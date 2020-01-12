@@ -29,7 +29,7 @@ func (r *mutationResolver) CreateBook(ctx context.Context, book BookMutation) (*
 func (r *mutationResolver) UpdateBook(ctx context.Context, id int, book BookMutation) (*bool, error) {
 	return nil, r.service.Update(id, data.Book{Title: book.Title, Author: book.Author})
 }
-func (r *mutationResolver) Delete(ctx context.Context, id int) (*bool, error) {
+func (r *mutationResolver) DeleteBook(ctx context.Context, id int) (*bool, error) {
 	return nil, r.service.Delete(id)
 }
 
@@ -38,8 +38,8 @@ type queryResolver struct{ *Resolver }
 func (r *queryResolver) Books(ctx context.Context) ([]*data.Book, error) {
 	dto := []*data.Book{}
 	books, err := r.service.List()
-	for _, v := range books {
-		dto = append(dto, &v)
+	for i := range books {
+		dto = append(dto, &books[i])
 	}
 	return dto, err
 }
