@@ -1,0 +1,3 @@
+mutation BookCreate($book: BookMutation!) {
+  createBook (book: $book)
+}

@@ -1,0 +1,8 @@
+
+query BookGet($id: Int!) {
+  book(id: $id) {
+    id,
+    title,
+    author
+  }
+}

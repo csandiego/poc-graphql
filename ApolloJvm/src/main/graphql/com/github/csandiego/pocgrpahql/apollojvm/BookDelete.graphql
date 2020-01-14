@@ -1,0 +1,3 @@
+mutation BookDelete($id: Int!) {
+    deleteBook(id: $id)
+}
